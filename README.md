@@ -42,7 +42,7 @@ A feature-rich job portal application built with **Java** and **Spring Boot** an
 ### Steps to Set Up Locally
 
 1. **Clone the Repository**
-   `git clone https://github.com/<your-username>/JobPortal.git`
+   `git clone https://github.com/<your-username>/JobPortal.git` and
    `cd job-portal`
 2. **Set Up the Database**
    - Create a new PostgreSQL database.
