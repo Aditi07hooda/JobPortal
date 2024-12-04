@@ -16,7 +16,7 @@ const Jobs = () => {
 
   const fetchJobs = async () => {
     try {
-      const res = await fetch("http://localhost:8080/jobs");
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/jobs`);
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
@@ -31,9 +31,41 @@ const Jobs = () => {
     }
   };
 
+  const updateJob = async ({
+    id,
+    jobTitle,
+    jobDescription,
+    techStack,
+    experience,
+  }) => {
+    try {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/updateJob/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id,
+          jobTitle,
+          jobDescription,
+          techStack,
+          experience,
+        }),
+      });
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      const data = await res.text();
+      console.log(data);
+      fetchJobs();
+    } catch (error) {
+      console.error("Failed to update jobs:", error);
+    }
+  };
+
   const deleteJob = async (jobId) => {
     try {
-      const res = await fetch(`http://localhost:8080/deleteJob/${jobId}`, {
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/deleteJob/${jobId}`, {
         method: "DELETE",
       });
       const data = await res.text();
@@ -51,7 +83,7 @@ const Jobs = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:8080/job/${state.id}`);
+      const res = await fetch(`${import.meta.env.VITE_BACKEND_API}/job/${state.id}`);
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
@@ -104,7 +136,7 @@ const Jobs = () => {
       {state.id !== "" && state.job.id !== 0 ? (
         <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           <div className="col-span-1 md:col-span-2 lg:col-span-3 xl:col-span-4">
-            <JobCard key={state.job.id} job={state.job} deleteJob={deleteJob} />
+            <JobCard key={state.job.id} job={state.job} deleteJob={deleteJob} updateJob={updateJob} />
           </div>
         </div>
       ) : state.id !== "" && state.job.id === 0 ? (
@@ -114,7 +146,7 @@ const Jobs = () => {
       ) : (
         <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {state.jobs.map((job) => (
-            <JobCard key={job.id} job={job} deleteJob={deleteJob} />
+            <JobCard key={job.id} job={job} deleteJob={deleteJob} updateJob={updateJob} />
           ))}
         </div>
       )}

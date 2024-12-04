@@ -1,7 +1,29 @@
 import PropTypes from "prop-types";
 import Button from "./Button";
+import 'react-responsive-modal/styles.css';
+import { Modal } from 'react-responsive-modal';
+import { useState } from "react";
+import AddJob from "../Pages/AddJob";
 
-const JobCard = ({ job, deleteJob }) => {
+const JobCard = ({ job, deleteJob, updateJob }) => {
+
+  const [state, setState] = useState({
+    showUpdateModal: false,
+  })
+
+  const handleOpenUpdateModal = () => {
+    setState((prev)=>({
+      ...prev,
+      showUpdateModal: true
+    }))
+  }
+
+  const handleCloseUpdateModal = () => {
+    setState((prev)=>({
+      ...prev,
+      showUpdateModal: false
+    }))
+  }
  
   return (
     <div className="bg-white shadow-lg rounded-lg p-6 w-full max-w-sm">
@@ -34,7 +56,10 @@ const JobCard = ({ job, deleteJob }) => {
         years
       </p>
       <div className="flex justify-between items-center mt-10">
-        <Button text="Update" />
+        <Button text="Update" onclick={handleOpenUpdateModal}/>
+        <Modal open={state.showUpdateModal} onClose={handleCloseUpdateModal} center>
+          <AddJob job={job} updateJob={updateJob} />
+        </Modal>
         <button
           className="bg-red-600 hover:bg-red-700 py-2 px-4 rounded-md text-white font-semibold"
           onClick={()=>deleteJob(job.id)}
@@ -57,4 +82,5 @@ JobCard.propTypes = {
     experience: PropTypes.number.isRequired,
   }).isRequired,
   deleteJob: PropTypes.func.isRequired,
+  updateJob: PropTypes.func.isRequired,
 };
