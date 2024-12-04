@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import Button from "../Components/Button";
+import availableTechStack from "../assets/AvailableTechStacks";
 
 const AddJob = ({ job, updateJob }) => {
   const [state, setState] = useState({
@@ -104,7 +105,7 @@ const AddJob = ({ job, updateJob }) => {
         jobTitle: state.jobTitle,
         jobDescription: state.jobDescription,
         techStack: state.techStack,
-        experience: state.experience
+        experience: state.experience,
       });
       setState((prev) => ({ ...prev, success: true, error: false }));
       clearForm();
@@ -132,12 +133,12 @@ const AddJob = ({ job, updateJob }) => {
       <h2 className="text-3xl font-bold text-blue-700 mb-3 text-center underline">
         Add Job
       </h2>
-      {state.success && job===undefined && (
+      {state.success && job === undefined && (
         <div className="bg-green-100 border border-green-400 text-green-700 px-5 py-3 rounded-md mb-4">
           Job Added Successfully!
         </div>
       )}
-      {state.error && job===undefined && (
+      {state.error && job === undefined && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-5 py-3 rounded-md mb-4">
           Error Adding Job. Please try again.
         </div>
@@ -222,15 +223,11 @@ const AddJob = ({ job, updateJob }) => {
             onChange={handleTechStackChange}
             className="w-full border border-gray-300 rounded-md px-3 py-2 text-gray-700 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="JavaScript">JavaScript</option>
-            <option value="React">React</option>
-            <option value="Node.js">Node.js</option>
-            <option value="Spring Boot">Spring Boot</option>
-            <option value="Python">Python</option>
-            <option value="Java">Java</option>
-            <option value="Tailwind CSS">Tailwind CSS</option>
-            <option value="MySQL">MySQL</option>
-            <option value="MongoDB">MongoDB</option>
+            {availableTechStack.map((techStack, index) => (
+              <option value={techStack} key={index}>
+                {techStack}
+              </option>
+            ))}
           </select>
           <p className="text-sm text-gray-500 mt-1">
             Hold down Ctrl (Windows) or Command (Mac) to select multiple
