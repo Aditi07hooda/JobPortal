@@ -1,6 +1,7 @@
 package com.aditi.jobportal.Controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,7 +36,7 @@ public class RestControllers {
     }
 
     @GetMapping("/job/{id}")
-    public AddJobModel getJob(@PathVariable("id") int id) {
+    public Optional<AddJobModel> getJob(@PathVariable("id") int id) {
         return service.getJob(id);
     }
 

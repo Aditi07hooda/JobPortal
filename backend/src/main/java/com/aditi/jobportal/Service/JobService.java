@@ -1,6 +1,7 @@
 package com.aditi.jobportal.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,22 +16,22 @@ public class JobService {
     private JobRepo repo;
     
     public void addJobToRep(AddJobModel addJobModel) {
-        repo.addJob(addJobModel);
+        repo.save(addJobModel);
     }
     
     public List<AddJobModel> getAllJobs(){
-        return repo.getAllJobs();
+        return repo.findAll();
     }
 
-    public AddJobModel getJob(int id){
-        return repo.getJob(id);
+    public Optional<AddJobModel> getJob(int id){
+        return repo.findById(id);
     }
 
     public void deleteJob(int id){
-        repo.deleteJob(id);
+        repo.deleteById(id);
     }
 
     public void updateJob(int id, AddJobModel addJobModel) {
-        repo.updateJob(id, addJobModel);
+        repo.save(addJobModel);
     }
 }

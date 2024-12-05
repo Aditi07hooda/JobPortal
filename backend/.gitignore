@@ -35,3 +35,4 @@ build/
 /src/main/java/com/aditi/jobportal/Controller/HomeController.java
 /src/main/webapp
 /src/main/resources/static/Styles.css
+/src/main/resources/application.properties
