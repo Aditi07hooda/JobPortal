@@ -1,5 +1,6 @@
 package com.aditi.jobportal.Controller;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.aditi.jobportal.Model.AddJobModel;
 import com.aditi.jobportal.Service.JobService;
+
 
 
 @RestController
@@ -50,5 +52,10 @@ public class RestControllers {
     public String updateJob(@PathVariable int id, @RequestBody AddJobModel addJobModel) {
         service.updateJob(id, addJobModel);
         return "Job Updated Successfully";
+    }
+
+    @GetMapping("/job/search/{search}")
+    public HashSet<Optional<AddJobModel>> findJob(@PathVariable("search") String search) {
+        return service.findJob(search);
     }
 }
