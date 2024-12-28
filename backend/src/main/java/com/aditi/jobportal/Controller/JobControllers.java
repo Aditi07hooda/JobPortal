@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aditi.jobportal.Model.AddJobModel;
@@ -20,8 +21,8 @@ import com.aditi.jobportal.Service.JobService;
 
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
-public class RestControllers {
+@CrossOrigin(origins = "*", methods = { RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
+public class JobControllers {
 
     @Autowired
     private JobService service;
@@ -38,7 +39,7 @@ public class RestControllers {
     }
 
     @GetMapping("/job/{id}")
-    public Optional<AddJobModel> getJob(@PathVariable("id") int id) {
+    public AddJobModel getJob(@PathVariable("id") int id) {
         return service.getJob(id);
     }
 

@@ -24,8 +24,8 @@ public class JobService {
         return repo.findAll();
     }
 
-    public Optional<AddJobModel> getJob(int id) {
-        return repo.findById(id);
+    public AddJobModel getJob(int id) {
+        return repo.findById(id).orElse(new AddJobModel());
     }
 
     public void deleteJob(int id) {
