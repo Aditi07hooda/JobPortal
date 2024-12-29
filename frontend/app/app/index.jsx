@@ -15,7 +15,7 @@ const index = () => {
           Find your dream job here at our Job Portal !!
         </Text>
         <View className="mt-12 mx-7 items-center flex justify-center">
-          <TouchableOpacity onPress={() => router.push("/(tabs)/Home")}>
+          <TouchableOpacity onPress={() => router.replace("/(auth)/Signin")}>
             <View className="border px-4 py-1 rounded-md w-full bg-indigo-300">
               <Text className="text-2xl font-black font-serif text-center">
                 Join
