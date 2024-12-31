@@ -7,13 +7,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aditi.jobportal.Model.LoginRequest;
 import com.aditi.jobportal.Model.UserModel;
 import com.aditi.jobportal.Service.JwtService;
 import com.aditi.jobportal.Service.UserService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 public class UserController {
@@ -42,7 +44,7 @@ public class UserController {
     @PostMapping("/login")
     public String loginUser(@RequestBody LoginRequest login) {
         UserDetails userDetails = service.loadUserByEmail(login.getEmail());
-
+        System.out.println("User: " + userDetails + " " + login);
         Authentication auth = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(userDetails.getUsername(), login.getPassword()));
 
@@ -51,4 +53,10 @@ public class UserController {
         }
         return "login failed";
     }
+
+    @GetMapping("/me")
+    public UserModel getUserDetail(@RequestParam String email) {
+        return service.getUserByEmail(email); 
+    }
+    
 }

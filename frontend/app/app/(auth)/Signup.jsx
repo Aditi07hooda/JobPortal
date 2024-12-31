@@ -12,6 +12,7 @@ export default function Signup() {
     password: "",
     username: "",
     role: "",
+    error: "",
   });
 
   const signUp = async () => {
@@ -30,10 +31,19 @@ export default function Signup() {
       });
       const data = await res.text();
       console.log(data);
-      await AsyncStorage.setItem("token", data);
-      router.replace("/(tabs)/Home");
+      
+      if (data) {
+        await AsyncStorage.setItem("token", data);
+        await AsyncStorage.setItem("email", state.email);
+        router.replace("/(tabs)/Home");
+      }
     } catch (error) {
       console.error("Error signing into the job portal", error);
+      setState((prev) => ({
+        ...prev,
+        error:
+          "Error signing into the job portal!! Please enter your correct credential",
+      }));
     }
   };
 

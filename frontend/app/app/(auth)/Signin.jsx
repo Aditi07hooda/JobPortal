@@ -20,14 +20,18 @@ const Signin = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: state.username,
           email: state.email,
+          password: state.password,
         }),
       });
       const data = await res.text();
       console.log(data);
-      await AsyncStorage.setItem("token", data);
-      router.replace("/(tabs)/Home");
+      
+      if(data){
+        await AsyncStorage.setItem("token", data);
+        await AsyncStorage.setItem("email", state.email);
+        router.replace("/(tabs)/Home");
+      }
     } catch (error) {
       console.error("Error signing into the job portal", error);
     }

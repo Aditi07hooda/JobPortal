@@ -1,22 +1,21 @@
 import { View, Text, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import JobCard from "../../components/JobCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "expo-router";
 
 const Jobs = () => {
-  const [state, setState] = useState({
-    jobs: [],
-  });
-
+  const [state, setState] = useState({ jobs: [] });
+  
   const fetchingJobs = async () => {
+    const token = await AsyncStorage.getItem("token");
     try {
-      const token = await AsyncStorage.getItem("token");
-      const res = await fetch("http://192.168.0.134:8080/jobs",{
+      const res = await fetch("http://192.168.0.134:8080/jobs", {
         method: "GET",
         headers: {
-          "Authorization": `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
@@ -29,16 +28,15 @@ const Jobs = () => {
     }
   };
 
-  useEffect(() => {
-    const loadJobs = async () => {
-      const data = await fetchingJobs();
-      setState((prev) => ({
-        ...prev,
-        jobs: data,
-      }));
-    };
-    loadJobs();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      const loadJobs = async () => {
+        const data = await fetchingJobs();
+        setState({ jobs: data });
+      };
+      loadJobs();
+    }, [])
+  );
 
   return (
     <SafeAreaView className="h-full bg-blue-100">
@@ -54,7 +52,7 @@ const Jobs = () => {
         <FlatList
           className="flex gap-4 h-full py-4 px-5"
           data={state.jobs}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id.toString()} // Ensure id is a string
           renderItem={({ item }) => <JobCard job={item} />}
           ListEmptyComponent={() => (
             <View className="bg-blue-100 p-4 shadow-md">

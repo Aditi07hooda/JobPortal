@@ -41,4 +41,8 @@ public class UserService implements UserDetailsService {
         user.setPassword(encoder.encode(user.getPassword()));
         repo.save(user);
     }
+
+    public UserModel getUserByEmail(String email) {
+        return repo.findByEmail(email);
+    }
 }
