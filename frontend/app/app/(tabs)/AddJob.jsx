@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CustomForm from "../../components/CustomForm";
 import MultiSelectDropdown from "../../components/MultiSelectDropdown";
 import CustomButton from "../../components/CustomButton";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const AddJob = () => {
   const [state, setState] = useState({
@@ -31,10 +32,12 @@ const AddJob = () => {
 
   const addJobToDB = async () => {
     try {
-      const res = await fetch(`${process.env.EXPO_BACKEND_API}/addJob`, {
+      const token = await AsyncStorage.getItem("token");
+      const res = await fetch("http://192.168.0.134:8080/addJob", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`,
         },
         body: JSON.stringify({
           id: state.jobId,

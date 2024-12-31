@@ -1,20 +1,22 @@
-import { View, Text, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import CustomForm from "../../components/CustomForm";
 import CustomButton from "../../components/CustomButton";
+import CustomForm from "../../components/CustomForm";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const Signin = () => {
+export default function Signup() {
   const [state, setState] = useState({
     email: "",
     password: "",
+    username: "",
+    role: "",
   });
 
-  const signIn = async () => {
+  const signUp = async () => {
     try {
-      const res = await fetch("http://192.168.0.134:8080/login", {
+      const res = await fetch("http://192.168.0.134:8080/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -22,6 +24,8 @@ const Signin = () => {
         body: JSON.stringify({
           username: state.username,
           email: state.email,
+          role: state.role,
+          password: state.password,
         }),
       });
       const data = await res.text();
@@ -38,7 +42,7 @@ const Signin = () => {
       <View className="flex justify-center align-middle items-center h-[84%]">
         <View>
           <Text className="text-3xl font-bold text-center text-gray-800">
-            Sign In
+            Sign Up
           </Text>
           <Text className="text-base text-gray-600 text-center mt-1">
             Enter your credentials to explore the jobs!!
@@ -46,11 +50,23 @@ const Signin = () => {
         </View>
         <View className="flex w-full px-6 mt-5">
           <CustomForm
+            label="Username"
+            placeholder="Enter your username"
+            value={state.username}
+            onChange={(e) => setState((prev) => ({ ...prev, username: e }))}
+          />
+          <CustomForm
             label="Email Id"
             placeholder="Enter your email id"
             type="email-address"
             value={state.email}
             onChange={(e) => setState((prev) => ({ ...prev, email: e }))}
+          />
+          <CustomForm
+            label="Role"
+            placeholder="Enter your role"
+            value={state.role}
+            onChange={(e) => setState((prev) => ({ ...prev, role: e }))}
           />
           <CustomForm
             label="Password"
@@ -61,21 +77,19 @@ const Signin = () => {
           />
         </View>
         <View>
-          <CustomButton text="Sign In" style="mt-5" onPress={() => signIn()} />
+          <CustomButton text="Sign Up" style="mt-5" onPress={() => signUp()} />
         </View>
         <View className="flex gap-4 flex-row">
           <Text className="text-base text-gray-600 text-center mt-1">
-            Don't have an account?
+            Already have an account?
           </Text>
-          <TouchableOpacity onPress={() => router.push("/(auth)/Signup")}>
+          <TouchableOpacity onPress={() => router.push("/(auth)/Signin")}>
             <Text className="text-base text-blue-600 text-center mt-1">
-              Sign Up
+              Sign In
             </Text>
           </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
   );
-};
-
-export default Signin;
+}

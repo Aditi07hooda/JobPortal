@@ -29,6 +29,14 @@ public class UserService implements UserDetailsService {
         return new UserPrincipal(user);
     }
 
+    public UserDetails loadUserByEmail(String email) {
+        UserModel user = repo.findByEmail(email);
+        if (user == null) {
+            System.out.println("User not found");
+        }
+        return new UserPrincipal(user);
+    }
+
     public void registerUser(UserModel user) {
         user.setPassword(encoder.encode(user.getPassword()));
         repo.save(user);

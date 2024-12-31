@@ -2,6 +2,7 @@ import { View, Text, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useEffect, useState } from "react";
 import JobCard from "../../components/JobCard";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Jobs = () => {
   const [state, setState] = useState({
@@ -10,7 +11,13 @@ const Jobs = () => {
 
   const fetchingJobs = async () => {
     try {
-      const res = await fetch(`${process.env.EXPO_BACKEND_API}/jobs`);
+      const token = await AsyncStorage.getItem("token");
+      const res = await fetch("http://192.168.0.134:8080/jobs",{
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      });
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
